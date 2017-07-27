@@ -21,6 +21,7 @@ namespace Taschenrechner
     public partial class MainWindow : Window
     {
         int aktuellerWert = 0;
+        int lastresult = 0;
         bool numberinputrunning = true;
         char lastoperation = '=';
 
@@ -30,9 +31,17 @@ namespace Taschenrechner
         }
         private void appendnumber(int z)
         {
-            numberinputrunning = true;
-            aktuellerWert = aktuellerWert * 10 + z;
-            textBlockAusgabe.Text = aktuellerWert.ToString();
+            if (!numberinputrunning)
+            {
+                aktuellerWert = z;
+                numberinputrunning = true;
+                textBlockAusgabe.Text = aktuellerWert.ToString();
+            }
+            else
+            {
+                aktuellerWert = aktuellerWert * 10 + z;
+                textBlockAusgabe.Text = aktuellerWert.ToString();
+            }
         }
 
         private void Button7_Click(object sender, RoutedEventArgs e)
@@ -75,35 +84,55 @@ namespace Taschenrechner
         {
             appendnumber(0);
         }
-
+        private void calculate(char mathoperation)
+        {
+            switch (lastoperation)
+            {
+                case '+':
+                    lastresult = lastresult + aktuellerWert;
+                    break;
+                case '-':
+                    lastresult = lastresult - aktuellerWert;
+                    break;
+                case '*':
+                    lastresult = lastresult * aktuellerWert;
+                    break;
+                case '/':
+                    lastresult = lastresult / aktuellerWert;
+                    break;
+                case '=':
+                    lastresult = aktuellerWert;
+                    break;
+            }
+            textBlockAusgabe.Text = lastresult.ToString();
+            numberinputrunning = false;
+            lastoperation = mathoperation;
+        }
         private void ButtonPlus_Click(object sender, RoutedEventArgs e)
         {
-            numberinputrunning = false;
-            lastoperation = '+';
+            calculate('+');
         }
+
+       
 
         private void ButtonMinus_Click(object sender, RoutedEventArgs e)
         {
-            numberinputrunning = false;
-            lastoperation = '-';
+            calculate('-');
         }
 
         private void ButtonMal_Click(object sender, RoutedEventArgs e)
         {
-            numberinputrunning = false;
-            lastoperation = '*';
+            calculate('*');
         }
 
         private void ButtonGeteilt_Click(object sender, RoutedEventArgs e)
         {
-            numberinputrunning = false;
-            lastoperation = '/';
+            calculate('/');
         }
 
         private void ButtonGleich_Click(object sender, RoutedEventArgs e)
         {
-            numberinputrunning = false;
-            lastoperation = '=';
+            calculate('=');
         }
     }
 }
