@@ -23,7 +23,7 @@ namespace Taschenrechner
         int aktuellerWert = 0;
         int lastresult = 0;
         bool numberinputrunning = true;
-        char lastoperation = '=';
+        char lastoperation = '+';
 
         public MainWindow()
         {
@@ -101,7 +101,6 @@ namespace Taschenrechner
                     lastresult = lastresult / aktuellerWert;
                     break;
                 case '=':
-                    lastresult = aktuellerWert;
                     break;
             }
             textBlockAusgabe.Text = lastresult.ToString();
